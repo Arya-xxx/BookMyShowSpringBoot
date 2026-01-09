@@ -55,4 +55,14 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
     }
 
+    @ExceptionHandler(TheatreNotFoundException.class)
+    public ResponseEntity<String> handleTheatreNotFound(TheatreNotFoundException ex){
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(ScreenNotFoundException.class)
+    public ResponseEntity<String> handleScreenNotFound(ScreenNotFoundException ex){
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
+    }
+
 }

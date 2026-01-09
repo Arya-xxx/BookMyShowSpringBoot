@@ -2,9 +2,12 @@ package com.example.bookmyshow.service;
 
 import com.example.bookmyshow.dto.UserRequestDto;
 import com.example.bookmyshow.dto.UserResponseDto;
+import com.example.bookmyshow.exception.CityNotFoundException;
 import com.example.bookmyshow.exception.UserAlreadyExistsException;
 import com.example.bookmyshow.exception.UserNotFoundException;
+import com.example.bookmyshow.model.City;
 import com.example.bookmyshow.model.User;
+import com.example.bookmyshow.repository.CityRepository;
 import com.example.bookmyshow.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -17,7 +20,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
-
+    private final CityRepository cityRepository;
     // must add final for @RequiredArgsConstructor to work
 
 //    public UserServiceImpl(UserRepository userRepository) {
@@ -38,6 +41,8 @@ public class UserServiceImpl implements UserService {
             throw new UserAlreadyExistsException(" Hi Email already exists !");
         }
 
+        City city = cityRepository.findById(userDto.getCityId()).orElseThrow(()-> new CityNotFoundException("City Not Found"));
+        user.setCity(city);
         // 3️⃣ Persist entity
         User saved = userRepository.save(user);
 
@@ -45,7 +50,9 @@ public class UserServiceImpl implements UserService {
         return new UserResponseDto(
                 saved.getId(),
                 saved.getName(),
-                saved.getEmail()
+                saved.getEmail(),
+                city.getId(),
+                city.getName()
         );
     }
 
@@ -56,7 +63,10 @@ public class UserServiceImpl implements UserService {
                 .map(user -> new UserResponseDto(
                         user.getId(),
                         user.getName(),
-                        user.getEmail()))
+                        user.getEmail(),
+                        user.getCity().getId(),
+                        user.getCity().getName()
+                        ))
                 .collect(Collectors.toList());
 
     }
@@ -66,6 +76,7 @@ public class UserServiceImpl implements UserService {
         User user = new User();
 
         userRepository.findById(id).orElseThrow(()->new RuntimeException("User not found"));
+        City city = cityRepository.findById(userDto.getCityId()).orElseThrow(()->new CityNotFoundException("City Not found"));
 
         user.setEmail(userDto.getEmail());
         user.setName(userDto.getName());
@@ -76,7 +87,9 @@ public class UserServiceImpl implements UserService {
         return new UserResponseDto(
                 updatedUser.getId(),
                 updatedUser.getName(),
-                updatedUser.getEmail()
+                updatedUser.getEmail(),
+                updatedUser.getCity().getId(),
+                updatedUser.getCity().getName()
         );
 
     }
@@ -96,7 +109,9 @@ public class UserServiceImpl implements UserService {
         return new UserResponseDto(
                 user.getId(),
                 user.getName(),
-                user.getEmail()
+                user.getEmail(),
+                user.getCity().getId(),
+                user.getCity().getName()
         );
     }
 }

@@ -40,4 +40,7 @@ public class User {
     private Role role = Role.USER;
     @NotNull(message = "Password is required")
     private String password;
+    @ManyToOne
+    @JoinColumn(name = "city_id", nullable = false)
+    private City city;
 }
