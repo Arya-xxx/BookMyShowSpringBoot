@@ -21,15 +21,15 @@ public class ScreenController {
         return screenService.createScreen(screenRequestDto);
     }
     @GetMapping("theatre/{id}")
-    List<ScreenResponseDto> getScreensByTheatre(Long theatreId){
+    List<ScreenResponseDto> getScreensByTheatre(@PathVariable Long theatreId){
         return screenService.getScreensByTheatre(theatreId);
     }
     @GetMapping("/{id}")
-    ScreenResponseDto getScreenById(Long id){
+    ScreenResponseDto getScreenById(@PathVariable Long id){
         return screenService.getScreenById(id);
     }
     @PostMapping
-    ScreenResponseDto updateScreen(Long id, ScreenRequestDto screenRequestDto){
+    ScreenResponseDto updateScreen(@RequestParam  Long id, ScreenRequestDto screenRequestDto){
         return screenService.updateScreen(id,screenRequestDto);
     }
     @DeleteMapping("/{id}")
