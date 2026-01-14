@@ -4,5 +4,6 @@ public enum BookingStatus {
     CREATED,    // booking initiated
     CONFIRMED,  // payment successful
     CANCELLED,  // user cancelled
-    FAILED      // payment failed
+    FAILED ,     // payment failed
+    EXPIRED
 }

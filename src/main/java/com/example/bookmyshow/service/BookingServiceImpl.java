@@ -30,19 +30,11 @@ public class BookingServiceImpl  implements  BookingService{
         Show show =showRepository.findById(showId).orElseThrow(()->new RuntimeException("Show not found"));
         List<ShowSeat>seats = showSeatRepository.findAvailableSeatsForUpdate(showSeatIds);
 
-        if(seats.size()!= showSeatIds.size()){
-            throw new RuntimeException("Some seats are already booked");
-        }
-
-        seats.forEach(ShowSeat::lock);
-
-        double totalAmount = calculatePrice(seats);
-
-        Booking booking = new Booking(user, show, seats, totalAmount);
-
+        Booking booking = new Booking(user, show, seats, calculatePrice(seats));
+        booking.lockSeats();
+        booking.confirm();
         Booking savedBooking = bookingRepository.save(booking);
 
-        seats.forEach(ShowSeat::book);
 
         return new BookingResponseDto(savedBooking.getId(), savedBooking.getStatus());
 

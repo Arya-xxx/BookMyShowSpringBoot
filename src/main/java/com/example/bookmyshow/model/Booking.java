@@ -48,6 +48,9 @@ public class Booking {
     // 🕒 When booking was created
     private LocalDateTime createdAt;
 
+    @Transient
+    private BookingState bookingState;
+
     // 🕒 When booking was cancelled (nullable)
     private LocalDateTime cancelledAt;
 
@@ -59,22 +62,37 @@ public class Booking {
      - Forces correct creation
      - Prevents partially-created bookings
     */
-    public Booking(User user, Show show, List<ShowSeat> showSeats, Double totalAmount) {
+    public Booking(User user, Show show, List<ShowSeat> showSeats, Double totalAmount ) {
         this.user = user;
         this.show = show;
         this.showSeats = showSeats;
         this.totalAmount = totalAmount;
         this.status = BookingStatus.CREATED;
         this.createdAt = LocalDateTime.now();
+        this.bookingState = new CreatedState();
     }
 
     // ✅ Business method (instead of setter)
-    public void confirm() {
-        this.status = BookingStatus.CONFIRMED;
-    }
+//    public void confirm() {
+//        this.status = BookingStatus.CONFIRMED;
+//    }
+//
+//    public void cancel() {
+//        this.status = BookingStatus.CANCELLED;
+//        this.cancelledAt = LocalDateTime.now();
+//    }
 
-    public void cancel() {
-        this.status = BookingStatus.CANCELLED;
-        this.cancelledAt = LocalDateTime.now();
+
+
+    public void lockSeats() { bookingState.lockSeats(this); }
+    public void confirm() { bookingState.confirm(this); }
+    public void cancel() { bookingState.cancel(this); }
+    public void expire() { bookingState.expire(this); }
+    public void fail() { bookingState.fail(this); }
+
+    public void setState(BookingState bookingState, BookingStatus status) {
+        this.bookingState = bookingState;
+        this.status = status;
+
     }
 }
