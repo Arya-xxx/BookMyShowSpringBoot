@@ -12,5 +12,7 @@ public interface BookingState {
 
      void fail(Booking booking);
 
+     void release(Booking booking);
+
 
 }

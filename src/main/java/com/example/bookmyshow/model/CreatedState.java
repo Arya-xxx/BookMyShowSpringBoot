@@ -30,4 +30,9 @@ public class CreatedState implements BookingState{
         booking.setState(new ExpiredState(), BookingStatus.FAILED);
 
     }
+
+    @Override
+    public void release(Booking booking) {
+
+    }
 }

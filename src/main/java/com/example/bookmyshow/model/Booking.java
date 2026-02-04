@@ -72,11 +72,26 @@ public class Booking {
         this.bookingState = new CreatedState();
     }
 
+    private double totalPrice;
+
+
+    public void assignPrice(double amount) {
+        this.totalAmount = amount;
+    }
+
+    public Double getTotalAmount() {
+        return totalAmount;
+    }
+
+    public boolean isPaymentAllowed() {
+        return this.status == BookingStatus.CREATED;
+    }
+
     // ✅ Business method (instead of setter)
 //    public void confirm() {
 //        this.status = BookingStatus.CONFIRMED;
 //    }
-//
+//F
 //    public void cancel() {
 //        this.status = BookingStatus.CANCELLED;
 //        this.cancelledAt = LocalDateTime.now();
@@ -89,10 +104,15 @@ public class Booking {
     public void cancel() { bookingState.cancel(this); }
     public void expire() { bookingState.expire(this); }
     public void fail() { bookingState.fail(this); }
+    public void release(){bookingState.release(this);}
 
     public void setState(BookingState bookingState, BookingStatus status) {
         this.bookingState = bookingState;
         this.status = status;
 
+    }
+
+    public List<ShowSeat> getSeats(){
+        return showSeats;
     }
 }

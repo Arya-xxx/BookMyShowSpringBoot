@@ -26,4 +26,9 @@ public class ConfirmedState implements BookingState{
     public void fail(Booking booking) {
         throw new IllegalStateException("Confirmed Seats cant be failed");
     }
+
+    @Override
+    public void release(Booking booking) {
+        throw new IllegalStateException("Confirmed Seats cant be failed");
+    }
 }

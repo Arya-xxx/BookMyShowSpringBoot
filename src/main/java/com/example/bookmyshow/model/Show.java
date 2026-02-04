@@ -93,6 +93,11 @@ public class Show {
     )
     private List<ShowSeat> showSeats = new ArrayList<>();
 
+    private boolean isWeekend;
+
+    private boolean isSurgeActive;
+
+
     /**
      * ===============================
      * JPA-REQUIRED PROTECTED CONSTRUCTOR
@@ -148,4 +153,5 @@ public class Show {
         showSeats.remove(seat);
         seat.assignShow(null);
     }
+
 }

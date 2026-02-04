@@ -26,4 +26,9 @@ public class CancelledState implements BookingState{
         throw new IllegalStateException("Booking cancelled");
 
     }
+
+    @Override
+    public void release(Booking booking) {
+        throw new IllegalStateException("Booking cancelled");
+    }
 }

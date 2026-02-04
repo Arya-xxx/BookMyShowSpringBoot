@@ -17,6 +17,14 @@ public class ShowSeat {
      */
     private Long seatNumber;
 
+    @ManyToOne
+    @JoinColumn(name = "seat_id")
+    private Seat seat;
+
+    public SeatType getSeatType() {
+        return seat.getSeatType();
+    }
+
     private double price;
 
     /**
@@ -44,6 +52,10 @@ public class ShowSeat {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "show_id", nullable = false)
     private Show show;
+
+    public void setSeat(Seat seat) {
+        this.seat = seat;
+    }
 
     protected ShowSeat() {}
 
